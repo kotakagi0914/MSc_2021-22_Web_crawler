@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/tebeka/selenium"
 )
@@ -56,6 +57,17 @@ func main() {
 		log.Println("Failed to click trigger element: ", err)
 		return
 	}
+
+	// Wait for the requests completed.
+	time.Sleep(time.Second * 2)
+
+	// Make sure the score tag is displayed.
+	reCAPTCHAScoreElemDisplayed, err = reCAPTCHAScoreElem.IsDisplayed()
+	if err != nil {
+		log.Println("Failed to get the flag for the tag being displayed: ", err)
+		return
+	}
+	log.Println("reCAPTCHA score element displayed?: ", reCAPTCHAScoreElemDisplayed)
 
 	log.Println("End")
 }
