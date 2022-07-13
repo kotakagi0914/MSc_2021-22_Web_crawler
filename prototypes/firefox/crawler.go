@@ -31,19 +31,20 @@ func main() {
 		return
 	}
 
-	// Get an HTML tag for the reCAPTCHA step description.
-	elem, err := wd.FindElement(selenium.ByCSSSelector, ".step1")
+	// Get an HTML tag for reCAPTCHA score
+	elem, err := wd.FindElement(selenium.ByCSSSelector, ".step4")
 	if err != nil {
 		log.Println("Failed to find HTML element: ", err)
 		return
 	}
 
-	elemText, err := elem.Text()
+	// Make sure that the HTML text is NOT displayed before triggering reCAPTCHA requests.
+	elemDisplayed, err := elem.IsDisplayed()
 	if err != nil {
-		log.Println("Failed to get tag text: ", err)
+		log.Println("Failed to get the flag for the tag being displayed: ", err)
 		return
 	}
-	log.Println("Elem text: ", elemText)
+	log.Println("Elem displayed?: ", elemDisplayed)
 
 	log.Println("End")
 }
