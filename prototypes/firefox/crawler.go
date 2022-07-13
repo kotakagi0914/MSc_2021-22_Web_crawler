@@ -25,10 +25,25 @@ func main() {
 	}
 	defer wd.Quit()
 
-	// Navigate to the simple playground interface.
+	// Navigate to the target URL.
 	if err := wd.Get(targetURL); err != nil {
-		log.Fatalln("Failed to connect to target URL: ", err)
+		log.Println("Failed to connect to target URL: ", err)
+		return
 	}
+
+	// Get an HTML tag for the reCAPTCHA step description.
+	elem, err := wd.FindElement(selenium.ByCSSSelector, ".step1")
+	if err != nil {
+		log.Println("Failed to find HTML element: ", err)
+		return
+	}
+
+	elemText, err := elem.Text()
+	if err != nil {
+		log.Println("Failed to get tag text: ", err)
+		return
+	}
+	log.Println("Elem text: ", elemText)
 
 	log.Println("End")
 }
