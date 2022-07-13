@@ -69,6 +69,14 @@ func main() {
 	}
 	log.Println("reCAPTCHA score element displayed?: ", reCAPTCHAScoreElemDisplayed)
 
+	// Obtain reCAPTCHA score text.
+	reCAPTCHAScoreText, err := reCAPTCHAScoreElem.Text()
+	if err != nil {
+		log.Println("Failed to get the flag for the tag being displayed: ", err)
+		return
+	}
+	log.Println("reCAPTCHA score: ", reCAPTCHAScoreText)
+
 	log.Println("End")
 }
 
