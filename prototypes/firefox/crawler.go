@@ -32,19 +32,19 @@ func main() {
 	}
 
 	// Get an HTML tag for reCAPTCHA score
-	elem, err := wd.FindElement(selenium.ByCSSSelector, ".step4")
+	reCAPTCHAScoreElem, err := wd.FindElement(selenium.ByCSSSelector, ".step4")
 	if err != nil {
-		log.Println("Failed to find HTML element: ", err)
+		log.Println("Failed to find reCAPTCHA score element: ", err)
 		return
 	}
 
 	// Make sure that the HTML text is NOT displayed before triggering reCAPTCHA requests.
-	elemDisplayed, err := elem.IsDisplayed()
+	reCAPTCHAScoreElemDisplayed, err := reCAPTCHAScoreElem.IsDisplayed()
 	if err != nil {
 		log.Println("Failed to get the flag for the tag being displayed: ", err)
 		return
 	}
-	log.Println("Elem displayed?: ", elemDisplayed)
+	log.Println("reCAPTCHA score element displayed?: ", reCAPTCHAScoreElemDisplayed)
 
 	log.Println("End")
 }
