@@ -32,7 +32,7 @@ func main() {
 		return
 	}
 
-	// Get an HTML tag for reCAPTCHA score
+	// Get an HTML tag for reCAPTCHA score.
 	reCAPTCHAScoreElem, err := wd.FindElement(selenium.ByCSSSelector, ".step4")
 	if err != nil {
 		log.Println("Failed to find reCAPTCHA score element: ", err)
