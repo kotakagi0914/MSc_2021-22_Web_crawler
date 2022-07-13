@@ -46,6 +46,17 @@ func main() {
 	}
 	log.Println("reCAPTCHA score element displayed?: ", reCAPTCHAScoreElemDisplayed)
 
+	// Identify the tag to trigger reCAPTCHA requests and click it.
+	triggerElem, err := wd.FindElement(selenium.ByCSSSelector, ".go")
+	if err != nil {
+		log.Println("Failed to find trigger element: ", err)
+		return
+	}
+	if err := triggerElem.Click(); err != nil {
+		log.Println("Failed to click trigger element: ", err)
+		return
+	}
+
 	log.Println("End")
 }
 
