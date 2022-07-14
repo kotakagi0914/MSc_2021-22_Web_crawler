@@ -31,13 +31,13 @@ func main() {
 		return
 	}
 
-	// // Get an HTML tag for submitting a form.
-	// submitButtonElem, err := wd.FindElement(selenium.ByCSSSelector, ".g-recaptcha")
-	// if err != nil {
-	// 	log.Println("Failed to find reCAPTCHA score element: ", err)
-	// 	return
-	// }
-	// log.Println(submitButtonElem.Size())
+	// Get an HTML tag for submitting a form.
+	submitButtonElem, err := wd.FindElement(selenium.ByCSSSelector, ".g-recaptcha")
+	if err != nil {
+		log.Println("Failed to find submit button: ", err)
+		return
+	}
+	log.Println(submitButtonElem.Size())
 
 	// // Make sure that the HTML text is NOT displayed before triggering reCAPTCHA requests.
 	// reCAPTCHAScoreElemDisplayed, err := reCAPTCHAScoreElem.IsDisplayed()
