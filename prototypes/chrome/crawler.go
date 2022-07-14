@@ -17,7 +17,7 @@ func main() {
 	log.Println("Start")
 
 	selenium.SetDebug(true)
-	cap := selenium.Capabilities{"browserName": "firefox"}
+	cap := selenium.Capabilities{"browserName": "chrome"}
 
 	// Connect to the WebDriver instance running in a docker container.
 	wd, err := selenium.NewRemote(cap, fmt.Sprintf("http://127.0.0.1:%d/wd/hub", seleniumPort))
