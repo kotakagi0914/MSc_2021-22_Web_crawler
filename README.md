@@ -7,8 +7,17 @@ The code in the repository contains web crawlers and their prototypes that have 
 ### Prototype for Firefox
 ```
 ## Run the docker image including GeckoDriver
-$ docker run --rm -d -p 4444:4444 --shm-size 2g seleniarm/standalone-firefox
+$ docker run --rm -d -p 4444:4444 seleniarm/standalone-firefox:<tag name>
 
 ## Run the crawler
 $ go run prototypes/firefox/crawler.go
+```
+
+### Prototype for Chromium
+```
+## Run the docker image including GeckoDriver
+$ docker run --rm -d -p 4444:4444 seleniarm/standalone-chromium:<tag name>
+
+## Run the crawler
+$ go run prototypes/chrome/crawler.go
 ```
