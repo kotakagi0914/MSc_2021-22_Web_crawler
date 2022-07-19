@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/tebeka/selenium"
 )
@@ -70,24 +71,23 @@ func main() {
 		return
 	}
 
-	// // Wait for the requests completed.
-	// time.Sleep(time.Second * 2)
+	// Wait for the requests completed.
+	time.Sleep(time.Second * 2)
 
-	// // Make sure the score tag is displayed.
-	// reCAPTCHAScoreElemDisplayed, err = reCAPTCHAScoreElem.IsDisplayed()
-	// if err != nil {
-	// 	log.Println("Failed to get the flag for the tag being displayed: ", err)
-	// 	return
-	// }
-	// log.Println("reCAPTCHA score element displayed?: ", reCAPTCHAScoreElemDisplayed)
+	// Obtain login result elements.
+	loginResulstsElem, err := wd.FindElement(selenium.ByCSSSelector, "div[name=\"login-result\"]")
+	if err != nil {
+		log.Println("Failed to find login result elements: ", err)
+		return
+	}
 
-	// // Obtain reCAPTCHA score text.
-	// reCAPTCHAScoreText, err := reCAPTCHAScoreElem.Text()
-	// if err != nil {
-	// 	log.Println("Failed to get the flag for the tag being displayed: ", err)
-	// 	return
-	// }
-	// log.Println("reCAPTCHA score: ", reCAPTCHAScoreText)
+	// Get login results text and show it.
+	loginResult, err := loginResulstsElem.Text()
+	if err != nil {
+		log.Println("Failed to get login result text: ", err)
+		return
+	}
+	log.Println("Login result: ", loginResult)
 
 	log.Println("End")
 }
