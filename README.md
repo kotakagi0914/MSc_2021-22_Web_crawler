@@ -4,20 +4,30 @@ This is a repository for MSc Cyber Security individual project at City, Universi
 The code in the repository contains web crawlers and their prototypes that have the features to bypass or solve reCAPTCHA v3.
 
 ## How to run
-### Prototype for Firefox
+### Preparation
+Before running web crawlers, you need to run selenium servers.
+Here are just two examples:
+* Run a docker container individually depending on your browser choise
 ```
-## Run the docker image including GeckoDriver
+## Run the docker image with GeckoDriver
 $ docker run --rm -d -p 4444:4444 seleniarm/standalone-firefox:<tag name>
+## Run the docker image with Chromium
+$ docker run --rm -d -p 4445:4444 seleniarm/standalone-chromium:<tag name>
+```
 
-## Run the crawler
+* Use `docker-compose` to run everything you need
+```
+$ docker-compose up -d
+```
+
+### Run Prototype for Firefox
+```
+## Run the crawler For firefox
 $ go run prototypes/firefox/crawler.go
 ```
 
-### Prototype for Chromium
+### Run Prototype for Chromium
 ```
-## Run the docker image including GeckoDriver
-$ docker run --rm -d -p 4444:4444 seleniarm/standalone-chromium:<tag name>
-
-## Run the crawler
+## Run the crawler for Chrome
 $ go run prototypes/chrome/crawler.go
 ```
