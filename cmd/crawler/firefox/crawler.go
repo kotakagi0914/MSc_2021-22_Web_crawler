@@ -3,14 +3,15 @@ package main
 import (
 	"fmt"
 	"log"
-	"time"
 
 	"github.com/tebeka/selenium"
 )
 
 const (
-	targetURL    = "https://recaptcha-demo.appspot.com/recaptcha-v3-request-scores.php"
-	seleniumPort = 4444
+	targetURL     = "http://mock-server:8000"
+	seleniumPort  = 4444
+	loginUserName = "admin"
+	loginPassword = "password"
 )
 
 func main() {
@@ -32,50 +33,56 @@ func main() {
 		return
 	}
 
-	// Get an HTML tag for reCAPTCHA score.
-	reCAPTCHAScoreElem, err := wd.FindElement(selenium.ByCSSSelector, ".step4")
+	// Get an input HTML tag for username.
+	usernameElem, err := wd.FindElement(selenium.ByCSSSelector, "input[name=\"username\"]")
 	if err != nil {
-		log.Println("Failed to find reCAPTCHA score element: ", err)
+		log.Println("Failed to find username input element: ", err)
 		return
 	}
 
-	// Make sure that the HTML text is NOT displayed before triggering reCAPTCHA requests.
-	reCAPTCHAScoreElemDisplayed, err := reCAPTCHAScoreElem.IsDisplayed()
-	if err != nil {
-		log.Println("Failed to get the flag for the tag being displayed: ", err)
-		return
-	}
-	log.Println("reCAPTCHA score element displayed?: ", reCAPTCHAScoreElemDisplayed)
-
-	// Identify the tag to trigger reCAPTCHA requests and click it.
-	triggerElem, err := wd.FindElement(selenium.ByCSSSelector, ".go")
-	if err != nil {
-		log.Println("Failed to find trigger element: ", err)
-		return
-	}
-	if err := triggerElem.Click(); err != nil {
-		log.Println("Failed to click trigger element: ", err)
+	// Input username to the input tag.
+	if err := usernameElem.SendKeys(loginUserName); err != nil {
+		log.Println("Failed to input login username: ", err)
 		return
 	}
 
-	// Wait for the requests completed.
-	time.Sleep(time.Second * 2)
+	// // Make sure that the HTML text is NOT displayed before triggering reCAPTCHA requests.
+	// reCAPTCHAScoreElemDisplayed, err := reCAPTCHAScoreElem.IsDisplayed()
+	// if err != nil {
+	// 	log.Println("Failed to get the flag for the tag being displayed: ", err)
+	// 	return
+	// }
+	// log.Println("reCAPTCHA score element displayed?: ", reCAPTCHAScoreElemDisplayed)
 
-	// Make sure the score tag is displayed.
-	reCAPTCHAScoreElemDisplayed, err = reCAPTCHAScoreElem.IsDisplayed()
-	if err != nil {
-		log.Println("Failed to get the flag for the tag being displayed: ", err)
-		return
-	}
-	log.Println("reCAPTCHA score element displayed?: ", reCAPTCHAScoreElemDisplayed)
+	// // Identify the tag to trigger reCAPTCHA requests and click it.
+	// triggerElem, err := wd.FindElement(selenium.ByCSSSelector, ".go")
+	// if err != nil {
+	// 	log.Println("Failed to find trigger element: ", err)
+	// 	return
+	// }
+	// if err := triggerElem.Click(); err != nil {
+	// 	log.Println("Failed to click trigger element: ", err)
+	// 	return
+	// }
 
-	// Obtain reCAPTCHA score text.
-	reCAPTCHAScoreText, err := reCAPTCHAScoreElem.Text()
-	if err != nil {
-		log.Println("Failed to get the flag for the tag being displayed: ", err)
-		return
-	}
-	log.Println("reCAPTCHA score: ", reCAPTCHAScoreText)
+	// // Wait for the requests completed.
+	// time.Sleep(time.Second * 2)
+
+	// // Make sure the score tag is displayed.
+	// reCAPTCHAScoreElemDisplayed, err = reCAPTCHAScoreElem.IsDisplayed()
+	// if err != nil {
+	// 	log.Println("Failed to get the flag for the tag being displayed: ", err)
+	// 	return
+	// }
+	// log.Println("reCAPTCHA score element displayed?: ", reCAPTCHAScoreElemDisplayed)
+
+	// // Obtain reCAPTCHA score text.
+	// reCAPTCHAScoreText, err := reCAPTCHAScoreElem.Text()
+	// if err != nil {
+	// 	log.Println("Failed to get the flag for the tag being displayed: ", err)
+	// 	return
+	// }
+	// log.Println("reCAPTCHA score: ", reCAPTCHAScoreText)
 
 	log.Println("End")
 }
