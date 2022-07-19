@@ -61,8 +61,8 @@ func main() {
 - https://pkg.go.dev/github.com/tebeka/selenium#pkg-overview
 
 # Line Count
-- Total:      81
+- Total:      57
 - Reused:     0
-- Written:    67
+- Written:    43
 - Referenced: 14
 */
