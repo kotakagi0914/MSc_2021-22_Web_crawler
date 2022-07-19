@@ -59,24 +59,16 @@ func main() {
 		return
 	}
 
-	// // Make sure that the HTML text is NOT displayed before triggering reCAPTCHA requests.
-	// reCAPTCHAScoreElemDisplayed, err := reCAPTCHAScoreElem.IsDisplayed()
-	// if err != nil {
-	// 	log.Println("Failed to get the flag for the tag being displayed: ", err)
-	// 	return
-	// }
-	// log.Println("reCAPTCHA score element displayed?: ", reCAPTCHAScoreElemDisplayed)
-
-	// // Identify the tag to trigger reCAPTCHA requests and click it.
-	// triggerElem, err := wd.FindElement(selenium.ByCSSSelector, ".go")
-	// if err != nil {
-	// 	log.Println("Failed to find trigger element: ", err)
-	// 	return
-	// }
-	// if err := triggerElem.Click(); err != nil {
-	// 	log.Println("Failed to click trigger element: ", err)
-	// 	return
-	// }
+	// Click login button.
+	loginButtonElem, err := wd.FindElement(selenium.ByCSSSelector, "input[name=\"submit\"]")
+	if err != nil {
+		log.Println("Failed to find login button element: ", err)
+		return
+	}
+	if err := loginButtonElem.Click(); err != nil {
+		log.Println("Failed to click login button element: ", err)
+		return
+	}
 
 	// // Wait for the requests completed.
 	// time.Sleep(time.Second * 2)
