@@ -10,4 +10,4 @@ services:
   mock-server:
     image: sheva0914/mock-server:v1.0-18072022
     ports:
-      - "800:8000"
+      - "8000:8000"
