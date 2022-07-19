@@ -1,0 +1,13 @@
+services:
+  firefox:
+    image: seleniarm/standalone-firefox:v4.3.0-20220709
+    ports:
+      - "4444:4444"
+  chrome:
+    image: seleniarm/standalone-chromium:v4.3.0-20220709
+    ports:
+      - "4445:4444"
+  mock-server:
+    image: sheva0914/mock-server:v1.0-18072022
+    ports:
+      - "800:8000"
