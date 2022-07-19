@@ -46,6 +46,19 @@ func main() {
 		return
 	}
 
+	// Get an input HTML tag for password.
+	passwordElem, err := wd.FindElement(selenium.ByCSSSelector, "input[name=\"password\"]")
+	if err != nil {
+		log.Println("Failed to find password input element: ", err)
+		return
+	}
+
+	// Input password to the input tag.
+	if err := passwordElem.SendKeys(loginPassword); err != nil {
+		log.Println("Failed to input login password: ", err)
+		return
+	}
+
 	// // Make sure that the HTML text is NOT displayed before triggering reCAPTCHA requests.
 	// reCAPTCHAScoreElemDisplayed, err := reCAPTCHAScoreElem.IsDisplayed()
 	// if err != nil {
