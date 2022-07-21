@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/tebeka/selenium"
-	"github.com/tebeka/selenium/firefox"
 )
 
 const (
@@ -21,11 +20,6 @@ func main() {
 
 	selenium.SetDebug(true)
 	cap := selenium.Capabilities{"browserName": "firefox"}
-	cap.AddFirefox(firefox.Capabilities{
-		Args: []string{
-			"--disable-blink-features=AutomationControlled",
-		},
-	})
 
 	// Connect to the WebDriver instance running in a docker container.
 	wd, err := selenium.NewRemote(cap, fmt.Sprintf("http://127.0.0.1:%d/wd/hub", seleniumPort))
@@ -40,60 +34,80 @@ func main() {
 		return
 	}
 
-	// Get an input HTML tag for username.
-	usernameElem, err := wd.FindElement(selenium.ByCSSSelector, "input[name=\"username\"]")
-	if err != nil {
-		log.Println("Failed to find username input element: ", err)
-		return
-	}
+	// Try to login 10 times consecutively
+	for i := 0; i < 30; i++ {
+		log.Println("Num of trial: ", i+1)
 
-	// Input username to the input tag.
-	if err := usernameElem.SendKeys(loginUserName); err != nil {
-		log.Println("Failed to input login username: ", err)
-		return
-	}
+		// Get an input HTML tag for username.
+		usernameElem, err := wd.FindElement(selenium.ByCSSSelector, "input[name=\"username\"]")
+		if err != nil {
+			log.Println("Failed to find username input element: ", err)
+			return
+		}
 
-	// Get an input HTML tag for password.
-	passwordElem, err := wd.FindElement(selenium.ByCSSSelector, "input[name=\"password\"]")
-	if err != nil {
-		log.Println("Failed to find password input element: ", err)
-		return
-	}
+		// Input username to the input tag.
+		if err := usernameElem.SendKeys(loginUserName); err != nil {
+			log.Println("Failed to input login username: ", err)
+			return
+		}
 
-	// Input password to the input tag.
-	if err := passwordElem.SendKeys(loginPassword); err != nil {
-		log.Println("Failed to input login password: ", err)
-		return
-	}
+		// Get an input HTML tag for password.
+		passwordElem, err := wd.FindElement(selenium.ByCSSSelector, "input[name=\"password\"]")
+		if err != nil {
+			log.Println("Failed to find password input element: ", err)
+			return
+		}
 
-	// Click login button.
-	loginButtonElem, err := wd.FindElement(selenium.ByCSSSelector, "input[name=\"submit\"]")
-	if err != nil {
-		log.Println("Failed to find login button element: ", err)
-		return
-	}
-	if err := loginButtonElem.Click(); err != nil {
-		log.Println("Failed to click login button element: ", err)
-		return
-	}
+		// Input password to the input tag.
+		if err := passwordElem.SendKeys(loginPassword); err != nil {
+			log.Println("Failed to input login password: ", err)
+			return
+		}
 
-	// Wait for the requests completed.
-	time.Sleep(time.Second * 2)
+		// Click login button.
+		loginButtonElem, err := wd.FindElement(selenium.ByCSSSelector, "input[name=\"submit\"]")
+		if err != nil {
+			log.Println("Failed to find login button element: ", err)
+			return
+		}
+		if err := loginButtonElem.Click(); err != nil {
+			log.Println("Failed to click login button element: ", err)
+			return
+		}
 
-	// Obtain login result elements.
-	loginResulstsElem, err := wd.FindElement(selenium.ByCSSSelector, "div[name=\"login-result\"]")
-	if err != nil {
-		log.Println("Failed to find login result elements: ", err)
-		return
-	}
+		// Wait for the requests completed.
+		time.Sleep(time.Second * 2)
 
-	// Get login results text and show it.
-	loginResult, err := loginResulstsElem.Text()
-	if err != nil {
-		log.Println("Failed to get login result text: ", err)
-		return
+		// Obtain login result elements.
+		loginResulstsElem, err := wd.FindElement(selenium.ByCSSSelector, "div[name=\"login-result\"]")
+		if err != nil {
+			log.Println("Failed to find login result elements: ", err)
+			return
+		}
+
+		// Get login results text and show it.
+		loginResult, err := loginResulstsElem.Text()
+		if err != nil {
+			log.Println("Failed to get login result text: ", err)
+			return
+		}
+		log.Println("Login result: ", loginResult)
+
+		// Go back to login page
+		// Click login button.
+		goBackButtonElem, err := wd.FindElement(selenium.ByCSSSelector, "input[name=\"go-back\"]")
+		if err != nil {
+			log.Println("Failed to find go-back button element: ", err)
+			return
+		}
+		if err := goBackButtonElem.Click(); err != nil {
+			log.Println("Failed to click go-back button: ", err)
+			return
+		}
+
+		log.Println("Wait for 1 second")
+		time.Sleep(time.Second * 1)
 	}
-	log.Println("Login result: ", loginResult)
 
 	log.Println("End")
 }
