@@ -8,6 +8,6 @@ services:
     ports:
       - "4445:4444"
   mock-server:
-    image: sheva0914/mock-server:v1.1-21072022
+    image: sheva0914/mock-server:v1.2-21072022
     ports:
       - "8000:8000"
