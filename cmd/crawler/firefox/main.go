@@ -22,12 +22,9 @@ func main() {
 }
 
 /*
-# Reference
-- https://pkg.go.dev/github.com/tebeka/selenium#pkg-overview
-
 # Line Count
-- Total:      93
+- Total:      22
 - Reused:     0
-- Written:    80
-- Referenced: 13
+- Written:    22
+- Referenced: 0
 */
