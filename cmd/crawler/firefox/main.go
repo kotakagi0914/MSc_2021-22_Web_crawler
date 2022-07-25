@@ -7,14 +7,15 @@ import (
 )
 
 const (
-	targetURL   = "http://mock-server:8000"
-	browserName = "firefox"
+	targetURL    = "http://mock-server:8000"
+	browserName  = "firefox"
+	seleniumPort = 4444
 )
 
 func main() {
 	log.Println("Start")
 
-	if err := crawler.Run(browserName, targetURL); err != nil {
+	if err := crawler.Run(browserName, targetURL, seleniumPort); err != nil {
 		log.Fatalf("Failed to run crawler on %s: %s\n", browserName, err.Error())
 	}
 
