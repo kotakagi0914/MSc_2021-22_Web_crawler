@@ -9,17 +9,16 @@ import (
 )
 
 const (
-	seleniumPort  = 4444
 	loginUserName = "admin"
 	loginPassword = "password"
 )
 
-func Run(browserName, targetURL string) error {
+func Run(browserName, targetURL string, portNum int) error {
 	selenium.SetDebug(true)
 	cap := selenium.Capabilities{"browserName": browserName}
 
 	// Connect to the WebDriver instance running in a docker container.
-	wd, err := selenium.NewRemote(cap, fmt.Sprintf("http://127.0.0.1:%d/wd/hub", seleniumPort))
+	wd, err := selenium.NewRemote(cap, fmt.Sprintf("http://127.0.0.1:%d/wd/hub", portNum))
 	if err != nil {
 		return fmt.Errorf("[crawler.Run()] Failed to connect to webDriver: %v", err)
 	}
