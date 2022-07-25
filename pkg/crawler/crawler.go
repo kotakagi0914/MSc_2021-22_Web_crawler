@@ -64,7 +64,16 @@ func Run(browserName, targetURL string, portNum int) error {
 	time.Sleep(time.Second * 2)
 
 	// Obtain login result elements.
-	loginResulstsElem, err := wd.FindElement(selenium.ByCSSSelector, "div[name=\"login-result\"]")
+	// When failed, sleep and retry up tp 10 times.
+	var loginResulstsElem selenium.WebElement
+	for i := 0; i < 10; i++ {
+		loginResulstsElem, err = wd.FindElement(selenium.ByCSSSelector, "div[name=\"login-result\"]")
+		if err == nil {
+			break
+		}
+		log.Println("[crawler.Run()] Sleep and retry to get login result")
+		time.Sleep(time.Second * 1)
+	}
 	if err != nil {
 		return fmt.Errorf("[crawler.Run()] Failed to find login result elements: %v", err)
 	}
@@ -84,8 +93,8 @@ func Run(browserName, targetURL string, portNum int) error {
 - https://pkg.go.dev/github.com/tebeka/selenium#pkg-overview
 
 # Line Count
-- Total:      93
+- Total:      92
 - Reused:     0
-- Written:    80
-- Referenced: 13
+- Written:    63
+- Referenced: 29
 */
