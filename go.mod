@@ -1,4 +1,4 @@
-module github.com/sheva0914/MSc_2021-22_Web_crawler_prototype
+module github.com/sheva0914/MSc_2021-22_Web_crawler
 
 go 1.18
 
