@@ -3,10 +3,14 @@ services:
     image: seleniarm/standalone-firefox:v4.3.0-20220709
     ports:
       - "4444:4444"
+    links:
+      - "mock-server:recaptcha-v3-test.com"
   chrome:
     image: seleniarm/standalone-chromium:v4.3.0-20220709
     ports:
       - "4445:4444"
+    links:
+      - "mock-server:recaptcha-v3-test.com"
   mock-server:
     image: sheva0914/mock-server:v1.2-21072022
     ports:
