@@ -14,7 +14,7 @@ const (
 )
 
 func Run(browserName, targetURL string, portNum int) error {
-	selenium.SetDebug(true)
+	// selenium.SetDebug(true)
 	cap := selenium.Capabilities{"browserName": browserName}
 
 	// Connect to the WebDriver instance running in a docker container.
@@ -49,6 +49,15 @@ func Run(browserName, targetURL string, portNum int) error {
 	// Input password to the input tag.
 	if err := passwordElem.SendKeys(loginPassword); err != nil {
 		return fmt.Errorf("[crawler.Run()] Failed to input login password: %v", err)
+	}
+
+	// Get an checkbox HTML tag anc click it.
+	checkboxElem, err := wd.FindElement(selenium.ByCSSSelector, "input[name=\"checkbox\"]")
+	if err != nil {
+		return fmt.Errorf("[crawler.Run()] Failed to find checkbox input element: %v", err)
+	}
+	if err := checkboxElem.Click(); err != nil {
+		return fmt.Errorf("[crawler.Run()] Failed to click checkbox element: %v", err)
 	}
 
 	// Click login button.
