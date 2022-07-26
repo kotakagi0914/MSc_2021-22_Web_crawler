@@ -7,7 +7,8 @@ import (
 )
 
 const (
-	targetURL    = "http://mock-server:8000"
+	// targetURL    = "http://mock-server:8000"
+	targetURL    = "http://recaptcha-v3-test.com:8000"
 	browserName  = "firefox"
 	seleniumPort = 4444
 )
