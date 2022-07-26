@@ -102,8 +102,8 @@ func Run(browserName, targetURL string, portNum int) error {
 - https://pkg.go.dev/github.com/tebeka/selenium#pkg-overview
 
 # Line Count
-- Total:      92
+- Total:      98
 - Reused:     0
-- Written:    63
-- Referenced: 29
+- Written:    64
+- Referenced: 34
 */
