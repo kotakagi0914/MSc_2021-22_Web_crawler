@@ -12,6 +12,6 @@ services:
     links:
       - "mock-server:recaptcha-v3-test.com"
   mock-server:
-    image: sheva0914/mock-server:v2.0-21072026
+    image: sheva0914/mock-server:v2.0-26072022
     ports:
       - "8000:8000"
