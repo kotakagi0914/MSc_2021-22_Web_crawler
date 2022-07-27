@@ -36,6 +36,7 @@ $ go run cmd/crawler/chrome/crawler.go
 ```
 ## Run the crawler for Firefox
 $ go run prototypes/firefox/crawler.go
+$ python prototypes/firefox/crawler.py
 
 ## Run the crawler for Chrome
 $ go run prototypes/chrome/crawler.go
