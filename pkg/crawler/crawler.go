@@ -3,9 +3,12 @@ package crawler
 import (
 	"fmt"
 	"log"
+	"math/rand"
 	"time"
 
 	"github.com/tebeka/selenium"
+	"github.com/tebeka/selenium/chrome"
+	"github.com/tebeka/selenium/firefox"
 )
 
 const (
@@ -13,9 +16,76 @@ const (
 	loginPassword = "password"
 )
 
-func Run(browserName, targetURL string, portNum int) error {
+var (
+	r = rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	userAgents = []string{
+		"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:103.0) Gecko/20100101 Firefox/103.0",                                                                             // Firefox on Mac
+		"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36]",                                           // Chrome on Mac
+		"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6 Safari/605.1.15]",                                           // Safari on Mac
+		"Mozilla/5.0 (X11; Ubuntu; Linux aarch64; rv:102.0) Gecko/20100101 Firefox/102.0",                                                                                  // Firefox on Ubuntu
+		"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246",                                  // Edge on Windows 10
+		"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36",                                                    // Chrome on Windows 7
+		"Mozilla/5.0 (Linux; Android 12; Pixel 6 Build/SD1A.210817.023; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/94.0.4606.71 Mobile Safari/537.36",   // Chrome on Google Pixel 6
+		"Mozilla/5.0 (Linux; Android 12; SM-S906N Build/QP1A.190711.020; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/80.0.3987.119 Mobile Safari/537.36", // Chrome on Samsung Galaxy S22
+		"Mozilla/5.0 (iPhone14,3; U; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) Version/10.0 Mobile/19A346 Safari/602.1",                   // Safari on iPhone 13 Pro Max
+		"Mozilla/5.0 (iPhone12,1; U; CPU iPhone OS 13_0 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) Version/10.0 Mobile/15E148 Safari/602.1",                   // Safari on iPhone 11
+	}
+	screenResolutions = []string{
+		"1920,1080",
+		"1366,768",
+		"1280,1024",
+		"1280,800",
+		"1024,768	",
+	}
+	languages = []string{
+		"en-GB",
+		"en-US",
+		"en-CA",
+		"en-In",
+		"ja-JP",
+		"de-DE",
+		"tl-PH",
+		"pt-BR",
+		"es-AR",
+	}
+)
+
+func getRandomUserAgent() string {
+	return userAgents[r.Intn(len(userAgents))-1]
+}
+
+func getRandomScreenResolution() string {
+	return screenResolutions[r.Intn(len(screenResolutions))-1]
+}
+
+func getRandomLanguage() string {
+	return languages[r.Intn(len(languages))-1]
+}
+
+func makeArgsForBrowserOptions() []string {
+	return []string{
+		fmt.Sprintf("--user-agent=%s", getRandomUserAgent()),
+		fmt.Sprintf("--window-size=%s", getRandomScreenResolution()),
+		fmt.Sprintf("--lang=%s", getRandomLanguage()),
+	}
+}
+
+func Run(browserName, targetURL string, portNum int, isRandomParams bool) error {
 	// selenium.SetDebug(true)
 	cap := selenium.Capabilities{"browserName": browserName}
+	// Set random parameters for each browser.
+	if isRandomParams {
+		if browserName == "firefox" {
+			args := makeArgsForBrowserOptions()
+			log.Println("Args: ", args)
+			cap.AddFirefox(firefox.Capabilities{Args: args})
+		} else if browserName == "chrome" {
+			args := makeArgsForBrowserOptions()
+			log.Println("Args: ", args)
+			cap.AddChrome(chrome.Capabilities{Args: args})
+		}
+	}
 
 	// Connect to the WebDriver instance running in a docker container.
 	wd, err := selenium.NewRemote(cap, fmt.Sprintf("http://127.0.0.1:%d/wd/hub", portNum))
@@ -102,10 +172,16 @@ func Run(browserName, targetURL string, portNum int) error {
 /*
 # Reference
 - https://pkg.go.dev/github.com/tebeka/selenium#pkg-overview
+- https://gobyexample.com/random-numbers
+- https://deviceatlas.com/blog/list-of-user-agent-strings
+- https://www.w3schools.com/browsers/browsers_display.asp
+- https://docs.oracle.com/cd/E13214_01/wli/docs92/xref/xqisocodes.html
+- https://chromedriver.chromium.org/capabilities
+- https://developer.mozilla.org/en-US/docs/Web/WebDriver/Capabilities/firefoxOptions
 
 # Line Count
-- Total:      100
+- Total:      168
 - Reused:     0
-- Written:    66
-- Referenced: 34
+- Written:    104
+- Referenced: 64
 */
