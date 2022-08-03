@@ -16,8 +16,10 @@ const (
 func main() {
 	log.Println("Start")
 
-	if err := crawler.Run(browserName, targetURL, seleniumPort); err != nil {
-		log.Fatalf("Failed to run crawler on %s: %s\n", browserName, err.Error())
+	for i := 0; i < 1; i++ {
+		if err := crawler.Run(browserName, targetURL, seleniumPort); err != nil {
+			log.Printf("Failed to run crawler on %s: %s\n", browserName, err.Error())
+		}
 	}
 
 	log.Println("End")
@@ -25,8 +27,8 @@ func main() {
 
 /*
 # Line Count
-- Total:      22
+- Total:      26
 - Reused:     0
-- Written:    22
+- Written:    26
 - Referenced: 0
 */
