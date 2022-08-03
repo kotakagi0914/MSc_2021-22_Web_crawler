@@ -10,7 +10,7 @@ import (
 
 const (
 	targetURL    = "https://recaptcha-demo.appspot.com/recaptcha-v3-request-scores.php"
-	seleniumPort = 4444
+	seleniumPort = 4445
 )
 
 func main() {
