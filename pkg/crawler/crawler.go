@@ -52,15 +52,15 @@ var (
 )
 
 func getRandomUserAgent() string {
-	return userAgents[r.Intn(len(userAgents))-1]
+	return userAgents[r.Intn(len(userAgents))]
 }
 
 func getRandomScreenResolution() string {
-	return screenResolutions[r.Intn(len(screenResolutions))-1]
+	return screenResolutions[r.Intn(len(screenResolutions))]
 }
 
 func getRandomLanguage() string {
-	return languages[r.Intn(len(languages))-1]
+	return languages[r.Intn(len(languages))]
 }
 
 func makeArgsForBrowserOptions() []string {
