@@ -71,99 +71,16 @@ func makeArgsForBrowserOptions() []string {
 	}
 }
 
-func addCookies(wd selenium.WebDriver) {
-	wd.AddCookie(&selenium.Cookie{
-		Name:   "aaa",
-		Value:  "aaa",
-		Path:   "/",
-		Domain: ".aaa.com",
-		Secure: true,
-		Expiry: 1691501089, // Tue Aug 08 2023 14:24:49 GMT+0100 (British Summer Time)
-	})
-	// wd.AddCookie(&selenium.Cookie{
-	// 	Name:   "bbbbb",
-	// 	Value:  "bbbbb",
-	// 	Path:   "/",
-	// 	Domain: ".bbbbb.com",
-	// 	Secure: true,
-	// 	Expiry: 1691501089, // Tue Aug 08 2023 14:24:49 GMT+0100 (British Summer Time)
-	// })
-	// wd.AddCookie(&selenium.Cookie{
-	// 	Name:   "cccccc",
-	// 	Value:  "cccccc",
-	// 	Path:   "/",
-	// 	Domain: ".cccccc.com",
-	// 	Secure: true,
-	// 	Expiry: 1721939011, // Thu Jul 25 2024 21:23:31 GMT+0100 (British Summer Time)
-	// })
-	// wd.AddCookie(&selenium.Cookie{
-	// 	Name:   "ddddddd",
-	// 	Value:  "ddddddd",
-	// 	Path:   "/",
-	// 	Domain: ".www.ddddddd.com",
-	// 	Secure: true,
-	// 	Expiry: 1721939011, // Thu Jul 25 2024 21:23:31 GMT+0100 (British Summer Time)
-	// })
-	// wd.AddCookie(&selenium.Cookie{
-	// 	Name:   "eeeeeeee",
-	// 	Value:  "eeeeeeee",
-	// 	Path:   "/",
-	// 	Domain: ".eeeeeeee.co.uk",
-	// 	Secure: true,
-	// 	Expiry: 1691501617, // Tue Aug 08 2023 14:33:37 GMT+0100 (British Summer Time)
-	// })
-	// wd.AddCookie(&selenium.Cookie{
-	// 	Name:   "fffffffff",
-	// 	Value:  "fffffffff",
-	// 	Path:   "/",
-	// 	Domain: ".ffffffffff.co.uk",
-	// 	Secure: true,
-	// 	Expiry: 1691501596, // Tue Aug 08 2023 14:33:16 GMT+0100 (British Summer Time)
-	// })
-	// wd.AddCookie(&selenium.Cookie{
-	// 	Name:   "gggggggggg",
-	// 	Value:  "gggggggggg",
-	// 	Path:   "/",
-	// 	Domain: "ggggggggggg.co.uk",
-	// 	Secure: true,
-	// })
-	// wd.AddCookie(&selenium.Cookie{
-	// 	Name:   "hhhhhhhhhhh",
-	// 	Value:  "hhhhhhhhhhh",
-	// 	Path:   "/",
-	// 	Domain: "hhhhhhhhhhh.co.uk",
-	// 	Secure: true,
-	// })
-	// wd.AddCookie(&selenium.Cookie{
-	// 	Name:   "iiiiiiiiiiii",
-	// 	Value:  "iiiiiiiiiiii",
-	// 	Path:   "/",
-	// 	Domain: ".iiiiiiiiiii.com",
-	// 	Secure: true,
-	// 	Expiry: 1690461391, // Thu Jul 27 2023 13:36:31 GMT+0100 (British Summer Time)
-	// })
-	// wd.AddCookie(&selenium.Cookie{
-	// 	Name:   "kkkkkkkkkkkkk",
-	// 	Value:  "kkkkkkkkkkkkk",
-	// 	Path:   "/",
-	// 	Domain: "kkkkkkkkkkkkk.com",
-	// 	Secure: false,
-	// 	Expiry: 1660570844, // Mon Aug 15 2022 14:40:44 GMT+0100 (British Summer Time)
-	// })
-}
-
 func Run(browserName, targetURL string, portNum int, isRandomParams bool) error {
 	// selenium.SetDebug(true)
 	cap := selenium.Capabilities{"browserName": browserName}
 	// Set random parameters for each browser.
 	if isRandomParams {
+		args := makeArgsForBrowserOptions()
+		log.Println("Args: ", args)
 		if browserName == "firefox" {
-			args := makeArgsForBrowserOptions()
-			log.Println("Args: ", args)
 			cap.AddFirefox(firefox.Capabilities{Args: args})
 		} else if browserName == "chrome" {
-			args := makeArgsForBrowserOptions()
-			log.Println("Args: ", args)
 			cap.AddChrome(chrome.Capabilities{Args: args})
 		}
 	}
@@ -175,10 +92,7 @@ func Run(browserName, targetURL string, portNum int, isRandomParams bool) error 
 	}
 	defer wd.Quit()
 
-	// Add cookies
-	addCookies(wd)
-
-	for i := 0; i < 1; i++ {
+	for i := 0; i < 10; i++ {
 		// Navigate to the target URL.
 		if err := wd.Get(targetURL); err != nil {
 			return fmt.Errorf("[crawler.Run()] Failed to connect to target URL: %v", err)
