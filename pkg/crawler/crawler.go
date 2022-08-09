@@ -14,6 +14,8 @@ import (
 const (
 	loginUserName = "admin"
 	loginPassword = "password"
+	typedString   = "abcdefghij"
+	duration      = 300
 )
 
 var (
@@ -105,12 +107,12 @@ func Run(browserName, targetURL string, portNum int, isRandomParams bool) error 
 		}
 
 		// Input username to the input tag.
-		for _, c := range loginUserName {
+		for _, c := range typedString {
 			if err := usernameElem.SendKeys(string(c)); err != nil {
 				return fmt.Errorf("[crawler.Run()] Failed to input login username: %v", err)
 			}
 
-			time.Sleep(100 * time.Millisecond)
+			time.Sleep(duration * time.Millisecond)
 		}
 
 		// Get an input HTML tag for password.
@@ -120,12 +122,12 @@ func Run(browserName, targetURL string, portNum int, isRandomParams bool) error 
 		}
 
 		// Input password to the input tag.
-		for _, c := range loginPassword {
+		for _, c := range typedString {
 			if err := passwordElem.SendKeys(string(c)); err != nil {
 				return fmt.Errorf("[crawler.Run()] Failed to input login password: %v", err)
 			}
 
-			time.Sleep(100 * time.Millisecond)
+			time.Sleep(duration * time.Millisecond)
 		}
 
 		// Get an checkbox HTML tag anc click it.
