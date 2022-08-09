@@ -92,7 +92,7 @@ func Run(browserName, targetURL string, portNum int, isRandomParams bool) error 
 	}
 	defer wd.Quit()
 
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 1; i++ {
 		// Navigate to the target URL.
 		if err := wd.Get(targetURL); err != nil {
 			return fmt.Errorf("[crawler.Run()] Failed to connect to target URL: %v", err)
@@ -105,8 +105,12 @@ func Run(browserName, targetURL string, portNum int, isRandomParams bool) error 
 		}
 
 		// Input username to the input tag.
-		if err := usernameElem.SendKeys(loginUserName); err != nil {
-			return fmt.Errorf("[crawler.Run()] Failed to input login username: %v", err)
+		for _, c := range loginUserName {
+			if err := usernameElem.SendKeys(string(c)); err != nil {
+				return fmt.Errorf("[crawler.Run()] Failed to input login username: %v", err)
+			}
+
+			time.Sleep(100 * time.Millisecond)
 		}
 
 		// Get an input HTML tag for password.
@@ -116,8 +120,12 @@ func Run(browserName, targetURL string, portNum int, isRandomParams bool) error 
 		}
 
 		// Input password to the input tag.
-		if err := passwordElem.SendKeys(loginPassword); err != nil {
-			return fmt.Errorf("[crawler.Run()] Failed to input login password: %v", err)
+		for _, c := range loginPassword {
+			if err := passwordElem.SendKeys(string(c)); err != nil {
+				return fmt.Errorf("[crawler.Run()] Failed to input login password: %v", err)
+			}
+
+			time.Sleep(100 * time.Millisecond)
 		}
 
 		// Get an checkbox HTML tag anc click it.
