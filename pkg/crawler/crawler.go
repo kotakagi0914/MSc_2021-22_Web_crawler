@@ -73,11 +73,11 @@ func makeArgsForBrowserOptions() []string {
 	}
 }
 
-func Run(browserName, targetURL string, portNum int, isRandomParams bool) error {
+func Run(browserName, targetURL string, portNum int, randomParamsEnabled bool) error {
 	// selenium.SetDebug(true)
 	cap := selenium.Capabilities{"browserName": browserName}
 	// Set random parameters for each browser.
-	if isRandomParams {
+	if randomParamsEnabled {
 		args := makeArgsForBrowserOptions()
 		log.Println("Args: ", args)
 		if browserName == "firefox" {
