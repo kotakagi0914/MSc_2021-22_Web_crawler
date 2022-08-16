@@ -15,7 +15,7 @@ const (
 	loginUserName = "admin"
 	loginPassword = "password"
 	typedString   = "abcdefghij"
-	duration      = 300
+	duration      = 250
 )
 
 var (
@@ -100,10 +100,18 @@ func Run(browserName, targetURL string, portNum int, isRandomParams bool) error 
 			return fmt.Errorf("[crawler.Run()] Failed to connect to target URL: %v", err)
 		}
 
+		// Sleep for a bit
+		time.Sleep(duration * time.Millisecond)
+
 		// Get an input HTML tag for username.
 		usernameElem, err := wd.FindElement(selenium.ByCSSSelector, "input[name=\"username\"]")
 		if err != nil {
 			return fmt.Errorf("[crawler.Run()] Failed to find username input element: %v", err)
+		}
+
+		// Click the HTML tag to focus on it.
+		if err := usernameElem.Click(); err != nil {
+			return fmt.Errorf("[crawler.Run()] Failed to click username input element: %v", err)
 		}
 
 		// Input username to the input tag.
@@ -112,7 +120,7 @@ func Run(browserName, targetURL string, portNum int, isRandomParams bool) error 
 				return fmt.Errorf("[crawler.Run()] Failed to input login username: %v", err)
 			}
 
-			time.Sleep(duration * time.Millisecond)
+			time.Sleep(duration*time.Millisecond + time.Duration(r.Intn(100)))
 		}
 
 		// Get an input HTML tag for password.
@@ -121,13 +129,18 @@ func Run(browserName, targetURL string, portNum int, isRandomParams bool) error 
 			return fmt.Errorf("[crawler.Run()] Failed to find password input element: %v", err)
 		}
 
+		// Click the HTML tag to focus on it.
+		if err := passwordElem.Click(); err != nil {
+			return fmt.Errorf("[crawler.Run()] Failed to click password input element: %v", err)
+		}
+
 		// Input password to the input tag.
 		for _, c := range typedString {
 			if err := passwordElem.SendKeys(string(c)); err != nil {
 				return fmt.Errorf("[crawler.Run()] Failed to input login password: %v", err)
 			}
 
-			time.Sleep(duration * time.Millisecond)
+			time.Sleep(duration*time.Millisecond + time.Duration(r.Intn(100)))
 		}
 
 		// Get an checkbox HTML tag anc click it.
