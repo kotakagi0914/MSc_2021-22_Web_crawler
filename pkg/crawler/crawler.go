@@ -201,8 +201,8 @@ func Run(browserName, targetURL string, portNum int, isRandomParams bool) error 
 - https://developer.mozilla.org/en-US/docs/Web/WebDriver/Capabilities/firefoxOptions
 
 # Line Count
-- Total:      168
+- Total:      191
 - Reused:     0
-- Written:    104
-- Referenced: 64
+- Written:    121
+- Referenced: 70
 */
