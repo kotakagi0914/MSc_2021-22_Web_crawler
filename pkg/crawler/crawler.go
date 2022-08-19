@@ -6,9 +6,9 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/tebeka/selenium"
-	"github.com/tebeka/selenium/chrome"
-	"github.com/tebeka/selenium/firefox"
+	"github.com/sheva0914/selenium"
+	"github.com/sheva0914/selenium/chrome"
+	"github.com/sheva0914/selenium/firefox"
 )
 
 const (
@@ -100,19 +100,38 @@ func Run(browserName, targetURL string, portNum int, randomParamsEnabled bool) e
 			return fmt.Errorf("[crawler.Run()] Failed to connect to target URL: %v", err)
 		}
 
-		// Sleep for a bit
-		time.Sleep(duration * time.Millisecond)
+		// Sleep for a bit when loading a page.
+		time.Sleep(time.Second * 1)
 
-		// Get an input HTML tag for username.
+		// Get an input HTML element for username.
 		usernameElem, err := wd.FindElement(selenium.ByCSSSelector, "input[name=\"username\"]")
 		if err != nil {
 			return fmt.Errorf("[crawler.Run()] Failed to find username input element: %v", err)
 		}
 
-		// Click the HTML tag to focus on it.
-		if err := usernameElem.Click(); err != nil {
+		// Get the location of the username element.
+		unePoint, err := usernameElem.Location()
+		if err != nil {
+			return fmt.Errorf("[crawler.Run()] Failed to find location of username input element: %v", err)
+		}
+
+		// Set mouse movement actions to the username element.
+		wd.StorePointerActions("mouse1",
+			selenium.MousePointer,
+			selenium.PointerMoveAction(0, *unePoint, selenium.FromViewport),
+			selenium.PointerPauseAction(100),
+			selenium.PointerDownAction(selenium.LeftButton),
+			selenium.PointerPauseAction(100),
+			selenium.PointerUpAction(selenium.LeftButton),
+		)
+
+		// Trigger the mouse movement actions.
+		if err := wd.PerformActions(); err != nil {
 			return fmt.Errorf("[crawler.Run()] Failed to click username input element: %v", err)
 		}
+
+		// Sleep for a bit assuming a human user switches to his keyboard.
+		time.Sleep(1*time.Second + time.Duration(r.Intn(100)))
 
 		// Input username to the input tag.
 		for _, c := range typedString {
@@ -123,16 +142,39 @@ func Run(browserName, targetURL string, portNum int, randomParamsEnabled bool) e
 			time.Sleep(duration*time.Millisecond + time.Duration(r.Intn(100)))
 		}
 
-		// Get an input HTML tag for password.
+		// Sleep for a bit assuming the human user switches to his mouse.
+		time.Sleep(1*time.Second + time.Duration(r.Intn(100)))
+
+		// Get an input HTML element for password.
 		passwordElem, err := wd.FindElement(selenium.ByCSSSelector, "input[name=\"password\"]")
 		if err != nil {
 			return fmt.Errorf("[crawler.Run()] Failed to find password input element: %v", err)
 		}
 
-		// Click the HTML tag to focus on it.
-		if err := passwordElem.Click(); err != nil {
+		// Get the location of the password element.
+		pwePoint, err := passwordElem.Location()
+		if err != nil {
+			return fmt.Errorf("[crawler.Run()] Failed to find location of password input element: %v", err)
+		}
+		newPoint := selenium.Point{X: pwePoint.X - unePoint.X, Y: pwePoint.Y - unePoint.Y}
+
+		// Set mouse movement actions to the password element.
+		wd.StorePointerActions("mouse1",
+			selenium.MousePointer,
+			selenium.PointerMoveAction(0, newPoint, selenium.FromPointer),
+			selenium.PointerPauseAction(250),
+			selenium.PointerDownAction(selenium.LeftButton),
+			selenium.PointerPauseAction(250),
+			selenium.PointerUpAction(selenium.LeftButton),
+		)
+
+		// Trigger the mouse movement actions.
+		if err := wd.PerformActions(); err != nil {
 			return fmt.Errorf("[crawler.Run()] Failed to click password input element: %v", err)
 		}
+
+		// Sleep for a bit assuming the human user switches to his keyboard.
+		time.Sleep(1*time.Second + time.Duration(r.Intn(100)))
 
 		// Input password to the input tag.
 		for _, c := range typedString {
@@ -143,22 +185,66 @@ func Run(browserName, targetURL string, portNum int, randomParamsEnabled bool) e
 			time.Sleep(duration*time.Millisecond + time.Duration(r.Intn(100)))
 		}
 
-		// Get an checkbox HTML tag anc click it.
+		// Sleep for a bit assuming the human user switches to his mouse.
+		time.Sleep(1*time.Second + time.Duration(r.Intn(100)))
+
+		// Get a checkbox HTML element.
 		checkboxElem, err := wd.FindElement(selenium.ByCSSSelector, "input[name=\"checkbox\"]")
 		if err != nil {
 			return fmt.Errorf("[crawler.Run()] Failed to find checkbox input element: %v", err)
 		}
-		if err := checkboxElem.Click(); err != nil {
+
+		// Get the location of the checkbox element.
+		cbePoint, err := checkboxElem.Location()
+		if err != nil {
+			return fmt.Errorf("[crawler.Run()] Failed to find location of checkbox input element: %v", err)
+		}
+		newPoint = selenium.Point{X: cbePoint.X - pwePoint.X, Y: cbePoint.Y - pwePoint.Y}
+
+		// Set mouse movement actions to the checkbox element.
+		wd.StorePointerActions("mouse1",
+			selenium.MousePointer,
+			selenium.PointerMoveAction(0, newPoint, selenium.FromPointer),
+			selenium.PointerPauseAction(250),
+			selenium.PointerDownAction(selenium.LeftButton),
+			selenium.PointerPauseAction(250),
+			selenium.PointerUpAction(selenium.LeftButton),
+		)
+
+		// Trigger the mouse movement actions.
+		if err := wd.PerformActions(); err != nil {
 			return fmt.Errorf("[crawler.Run()] Failed to click checkbox element: %v", err)
 		}
 
-		// Click login button.
+		// Sleep for a bit.
+		time.Sleep(time.Microsecond * 500)
+
+		// Get an HTML login button element.
 		loginButtonElem, err := wd.FindElement(selenium.ByCSSSelector, "input[name=\"submit\"]")
 		if err != nil {
 			return fmt.Errorf("[crawler.Run()] Failed to find login button element: %v", err)
 		}
-		if err := loginButtonElem.Click(); err != nil {
-			return fmt.Errorf("[crawler.Run()] Failed to click login button element: %v", err)
+
+		// Get the location of the login button element.
+		lbePoint, err := loginButtonElem.Location()
+		if err != nil {
+			return fmt.Errorf("[crawler.Run()] Failed to find location of login button element: %v", err)
+		}
+		newPoint = selenium.Point{X: lbePoint.X - cbePoint.X, Y: lbePoint.Y - cbePoint.Y}
+
+		// Set mouse movement actions to the login button element.
+		wd.StorePointerActions("mouse1",
+			selenium.MousePointer,
+			selenium.PointerMoveAction(0, newPoint, selenium.FromPointer),
+			selenium.PointerPauseAction(250),
+			selenium.PointerDownAction(selenium.LeftButton),
+			selenium.PointerPauseAction(250),
+			selenium.PointerUpAction(selenium.LeftButton),
+		)
+
+		// Trigger the mouse movement actions.
+		if err := wd.PerformActions(); err != nil {
+			return fmt.Errorf("[crawler.Run()] Failed to click checkbox element: %v", err)
 		}
 
 		// Wait for the requests completed.
@@ -199,10 +285,11 @@ func Run(browserName, targetURL string, portNum int, randomParamsEnabled bool) e
 - https://docs.oracle.com/cd/E13214_01/wli/docs92/xref/xqisocodes.html
 - https://chromedriver.chromium.org/capabilities
 - https://developer.mozilla.org/en-US/docs/Web/WebDriver/Capabilities/firefoxOptions
+- https://github.com/tebeka/selenium/blob/2fb003ac18dced9a6297ce8c03b54de0eddc5fcc/example_test.go#L122-L165
 
 # Line Count
-- Total:      191
+- Total:      277
 - Reused:     0
-- Written:    121
-- Referenced: 70
+- Written:    162
+- Referenced: 115
 */
