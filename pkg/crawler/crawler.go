@@ -8,7 +8,6 @@ import (
 
 	"github.com/sheva0914/selenium"
 	"github.com/sheva0914/selenium/chrome"
-	"github.com/sheva0914/selenium/firefox"
 )
 
 const (
@@ -67,22 +66,20 @@ func getRandomLanguage() string {
 
 func makeArgsForBrowserOptions() []string {
 	return []string{
-		fmt.Sprintf("--user-agent=%s", getRandomUserAgent()),
-		fmt.Sprintf("--window-size=%s", getRandomScreenResolution()),
-		fmt.Sprintf("--lang=%s", getRandomLanguage()),
+		fmt.Sprintf("user-agent=%s", getRandomUserAgent()),
+		fmt.Sprintf("window-size=%s", getRandomScreenResolution()),
+		fmt.Sprintf("accept-lang=%s", getRandomLanguage()),
 	}
 }
 
 func Run(browserName, targetURL string, portNum int, randomParamsEnabled bool) error {
 	// selenium.SetDebug(true)
 	cap := selenium.Capabilities{"browserName": browserName}
-	// Set random parameters for each browser.
+	// Set random parameters for Chrome browser.
 	if randomParamsEnabled {
 		args := makeArgsForBrowserOptions()
 		log.Println("Args: ", args)
-		if browserName == "firefox" {
-			cap.AddFirefox(firefox.Capabilities{Args: args})
-		} else if browserName == "chrome" {
+		if browserName == "chrome" {
 			cap.AddChrome(chrome.Capabilities{Args: args})
 		}
 	}
@@ -286,10 +283,11 @@ func Run(browserName, targetURL string, portNum int, randomParamsEnabled bool) e
 - https://chromedriver.chromium.org/capabilities
 - https://developer.mozilla.org/en-US/docs/Web/WebDriver/Capabilities/firefoxOptions
 - https://github.com/tebeka/selenium/blob/2fb003ac18dced9a6297ce8c03b54de0eddc5fcc/example_test.go#L122-L165
+- https://peter.sh/experiments/chromium-command-line-switches/
 
 # Line Count
-- Total:      277
+- Total:      274
 - Reused:     0
 - Written:    162
-- Referenced: 115
+- Referenced: 112
 */
