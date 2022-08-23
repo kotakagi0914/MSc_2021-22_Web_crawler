@@ -131,12 +131,19 @@ func Run(browserName, targetURL string, portNum int, randomParamsEnabled bool) e
 		time.Sleep(1*time.Second + time.Duration(r.Intn(100)))
 
 		// Input username to the input tag.
-		for _, c := range typedString {
-			if err := usernameElem.SendKeys(string(c)); err != nil {
-				return fmt.Errorf("[crawler.Run()] Failed to input login username: %v", err)
-			}
-
-			time.Sleep(duration*time.Millisecond + time.Duration(r.Intn(100)))
+		wd.StoreKeyActions("keyboard1",
+			selenium.KeyDownAction("h"),
+			selenium.KeyPauseAction(10),
+			selenium.KeyDownAction("e"),
+			selenium.KeyPauseAction(50),
+			selenium.KeyDownAction("l"),
+			selenium.KeyPauseAction(20),
+			selenium.KeyDownAction("l"),
+			selenium.KeyPauseAction(10),
+			selenium.KeyDownAction("o"),
+		)
+		if err := wd.PerformActions(); err != nil {
+			return fmt.Errorf("[crawler.Run()] Failed to input username: %v", err)
 		}
 
 		// Sleep for a bit assuming the human user switches to his mouse.
@@ -174,12 +181,19 @@ func Run(browserName, targetURL string, portNum int, randomParamsEnabled bool) e
 		time.Sleep(1*time.Second + time.Duration(r.Intn(100)))
 
 		// Input password to the input tag.
-		for _, c := range typedString {
-			if err := passwordElem.SendKeys(string(c)); err != nil {
-				return fmt.Errorf("[crawler.Run()] Failed to input login password: %v", err)
-			}
-
-			time.Sleep(duration*time.Millisecond + time.Duration(r.Intn(100)))
+		wd.StoreKeyActions("keyboard1",
+			selenium.KeyDownAction("h"),
+			selenium.KeyPauseAction(10),
+			selenium.KeyDownAction("e"),
+			selenium.KeyPauseAction(50),
+			selenium.KeyDownAction("l"),
+			selenium.KeyPauseAction(10),
+			selenium.KeyDownAction("l"),
+			selenium.KeyPauseAction(30),
+			selenium.KeyDownAction("o"),
+		)
+		if err := wd.PerformActions(); err != nil {
+			return fmt.Errorf("[crawler.Run()] Failed to input password: %v", err)
 		}
 
 		// Sleep for a bit assuming the human user switches to his mouse.
