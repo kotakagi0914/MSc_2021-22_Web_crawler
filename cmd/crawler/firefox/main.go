@@ -17,7 +17,7 @@ func main() {
 	log.Println("Start")
 
 	for i := 0; i < 1; i++ {
-		if err := crawler.Run(browserName, targetURL, seleniumPort, true); err != nil {
+		if err := crawler.Run(browserName, targetURL, seleniumPort, false, true); err != nil {
 			log.Printf("Failed to run crawler on %s: %s\n", browserName, err.Error())
 		}
 	}

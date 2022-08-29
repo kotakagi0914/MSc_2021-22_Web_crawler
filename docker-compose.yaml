@@ -11,6 +11,8 @@ services:
       - "4445:4444"
     links:
       - "mock-server:recaptcha-v3-test.com"
+    volumes:
+      - "path/to/local/profile:/tmp/chrome/profile"
   mock-server:
     image: sheva0914/mock-server:v2.0-26072022
     ports:

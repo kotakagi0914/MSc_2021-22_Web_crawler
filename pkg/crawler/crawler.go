@@ -8,13 +8,16 @@ import (
 
 	"github.com/sheva0914/selenium"
 	"github.com/sheva0914/selenium/chrome"
+	"github.com/sheva0914/selenium/firefox"
 )
 
 const (
-	loginUserName = "admin"
-	loginPassword = "password"
-	typedString   = "abcdefghij"
-	duration      = 250
+	loginUserName      = "admin"
+	loginPassword      = "password"
+	typedString        = "abcdefghij"
+	duration           = 250
+	firefoxProfilePath = "<path/to/profile>"
+	chromeProfilePath  = "<path/to/profile>"
 )
 
 var (
@@ -72,12 +75,31 @@ func makeArgsForBrowserOptions() []string {
 	}
 }
 
-func Run(browserName, targetURL string, portNum int, randomParamsEnabled bool) error {
-	// selenium.SetDebug(true)
+func Run(browserName, targetURL string, portNum int, randomParamsEnabled bool, userProfileEnabled bool) error {
+	selenium.SetDebug(true)
 	cap := selenium.Capabilities{"browserName": browserName}
+	var args []string
+
 	// Set random parameters for Chrome browser.
 	if randomParamsEnabled {
-		args := makeArgsForBrowserOptions()
+		args = makeArgsForBrowserOptions()
+	}
+
+	// Set user profile path.
+	if userProfileEnabled {
+		if browserName == "firefox" {
+			ffCap := firefox.Capabilities{}
+			ffCap.SetProfile(firefoxProfilePath)
+			cap.AddFirefox(ffCap)
+		}
+
+		if browserName == "chrome" {
+			// args = append(args, fmt.Sprintf("login-profile=%s", chromeProfilePath))
+			args = append(args, fmt.Sprintf("profile-directory=%s", chromeProfilePath))
+		}
+	}
+
+	if len(args) > 0 {
 		log.Println("Args: ", args)
 		if browserName == "chrome" {
 			cap.AddChrome(chrome.Capabilities{Args: args})
